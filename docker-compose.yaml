@@ -1,0 +1,24 @@
+services:
+  nodered:
+    build: 
+      context: .
+    image: nodered-eventhub
+    container_name: nodered-eventhub
+    restart: unless-stopped
+    ports:
+      - 1881:1880
+    environment:
+      EVENTHUB_CONNECTION_STRING: $EVENTHUB_CONNECTION_STRING
+      IOTHUB_CONNECTION_STRING: $IOTHUB_CONNECTION_STRING
+    volumes:
+      - ./data:/data
+      - ./config/settings.js:/data/settings.js
+      - .:/usr/src/node-red/src
+  # grafana:
+  #   image: grafana/grafana
+  #   ports:
+  #     - "3005:3000"
+  #   environment:
+  #     - GF_SECURITY_ADMIN_PASSWORD=admin
+  #   volumes:
+  #     - ./grafana-data:/var/lib/grafana

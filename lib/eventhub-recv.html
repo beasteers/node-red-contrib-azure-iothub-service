@@ -1,37 +1,54 @@
 <script type="text/javascript">
-    RED.nodes.registerType('azure-event-hub-receive', {
+    RED.nodes.registerType('eventhub-recv', {
         category: 'input',
         color: '#0080FF',
         defaults: {
             name: { value: "" },
-            connectionstring: { value: "" },
-            consumergroup: { value: "$default" }
+            connectionstring: { value: "EVENTHUB_CONNECTION_STRING" },
+            consumergroup: { value: "$default" },
+            connectionstringType: { value: "env" },
+            consumergroupType: { value: "str" },
         },
         inputs: 0,
-        outputs: 1,
+        outputs: 4,
+        outputLabels: ["message", "error", "connect", "close"],
         icon: "icon.png",
         label: function () {
-            return this.name || "azure-event-hub-receive";
-        }
+            return this.name || "event-hub";
+        },
+        oneditprepare: function () {
+            $('#node-input-connectionstring').typedInput({
+				typeField: "#node-input-connectionstringType",
+                default: this.connectionstringType,
+				types: ['str', 'global', 'env'],
+			});
+            $('#node-input-consumergroup').typedInput({
+                typeField: "#node-input-consumergroupType",
+				default: this.consumergroupType,
+				types: ['str', 'global', 'env'],
+			});
+        },
     });
 </script>
 
-<script type="text/x-red" data-template-name="azure-event-hub-receive">
+<script type="text/x-red" data-template-name="eventhub-recv">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
         <label for="node-input-connectionstring"><i class="icon-tag"></i> Event Hub Connection String</label>
+        <input type="hidden" id="node-input-connectionstringType">
         <input type="text" id="node-input-connectionstring" placeholder="E.g. Endpoint=sb://XXX.servicebus.windows.net/;SharedAccessKeyName=XXX;SharedAccessKey=XXX;EntityPath=XXX">
     </div>
     <div class="form-row">
         <label for="node-input-consumergroup"><i class="icon-tag"></i> Event Hub Consumer Group</label>
+        <input type="hidden" id="node-input-consumergroupType">
         <input type="text" id="node-input-consumergroup" placeholder="E.g. $default">
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="azure-event-hub-receive">
+<script type="text/x-red" data-help-name="eventhub-recv">
     <p>A simple node that receives messages from an Azure Event Hub...</p>
     <h3>Inputs</h3>
     <dl class="message-properties">
@@ -59,5 +76,4 @@
         <li><a href="https://azure.microsoft.com/en-us/services/event-hubs/">Azure Event Hubs</a></li>
         <li><a https://github.com/azure/azure-event-hubs-node>Azure Event Hubs NodeJS client (in preview)</a> - the client library used by this node</li>
     </ul>
-</script>
 </script>

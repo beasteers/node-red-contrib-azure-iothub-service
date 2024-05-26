@@ -1,0 +1,106 @@
+<script type="text/javascript">
+    RED.nodes.registerType('iothub-devices', {
+        category: 'input',
+        color: '#0080FF',
+        defaults: {
+            name: { value: "" },
+            connectionstring: { value: "IOTHUB_CONNECTION_STRING" },
+            connectionstringType: { value: "env" },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "icon.png",
+        label: function () {
+            return this.name || "iothub-devices";
+        },
+        oneditprepare: function () {
+            $('#node-input-connectionstring').typedInput({
+                typeField: "#node-input-connectionstringType",
+				default: this.connectionstringType,
+				types: ['str', 'global', 'env'],
+			});
+        },
+    });
+</script>
+
+<script type="text/x-red" data-template-name="iothub-devices">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connectionstring"><i class="icon-tag"></i> IoT Hub Connection String</label>
+        <input type="hidden" id="node-input-connectionstringType">
+        <input type="text" id="node-input-connectionstring" placeholder="E.g. Endpoint=sb://XXX.servicebus.windows.net/;SharedAccessKeyName=XXX;SharedAccessKey=XXX;EntityPath=XXX">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="iothub-devices">
+    <p>A simple node that controls Azure IoT Hub device registry.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties" style='overflow-x: auto;'>
+
+        <h4>List devices:</h4>
+        <code>method: <b>"device"</b></code>
+        <h4>Get device:</h4>
+        <code>method: <b>"device"</b>, deviceId: str</code>
+        <h4>Create device:</h4>
+        <code>method: <b>"device.create"</b>, deviceId: str</code>
+        
+        <div>
+        <b>payload (optional):</b>
+        <div>
+            <code>
+                {
+                    status: 'enabled',
+                    authentication: {
+                        x509Thumbprint: { primaryThumbprint: XXX, secondaryThumbprint: XXX }
+                    }
+                }
+            </code>
+        </div>
+        </div>
+        <h4>Get twin:</h4>
+        <code>method: <b>"twin"</b>, deviceId: str</code>
+        <h4>Update twin:</h4>
+        <code>method: <b>"twin.update"</b>, deviceId: str</code>
+        
+        <div>
+        <b>payload:</b>
+        <div>
+            <code>
+                {
+                    tags: { city: "Redmond" },
+                    properties: {
+                        desired: { telemetryInterval: 1000 },
+                    }
+                }
+            </code>
+        </div>
+        </div>
+        <h4>Delete device:</h4>
+        <code>method: <b>"device.delete"</b>, deviceId: str</code>
+
+    </dl>
+
+    <h3>Outputs</h3>
+    <ol class="node-ports">
+        <li>Standard output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">object</span></dt>
+                <dd>A JSON object result from IoT Hub.</dd>
+            </dl>
+        </li>
+    </ol>
+    
+    <h3>Details</h3>
+    In the node's properties, the connection string of the IoT Hub to which
+    you would like to connect, can be specified. Value can be retreived from 
+    the Azure Portal.
+
+    <h3>References</h3>
+    <ul>
+        <li><a href="https://azure.microsoft.com/en-us/services/event-hubs/">Azure Event Hubs</a></li>
+        <li><a href="https://github.com/Azure/azure-iot-hub-node/tree/main/samples">Azure Event Hubs NodeJS samples</a></li>
+    </ul>
+</script>

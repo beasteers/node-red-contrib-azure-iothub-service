@@ -1,10 +1,7 @@
 
-# node-red-contrib-azure-event-hub-receive
+# node-red-contrib-azure-iothub-service
 
-**node-red-contrib-azure-event-hub-receive** is a <a href="http://nodered.org" target="_new">Node-RED</a> node that allows you to receive messages from an <a href="https://azure.microsoft.com/en-us/services/event-hubs/">Azure Event Hub</a>.
-
-![](images/basicflow.png)
-
+![alt text](images/image.png)
 ## Installation
 
 ```
@@ -13,23 +10,52 @@ npm install -g node-red-contrib-azure-eventhub-receive
 
 # Usage
 
-*We assume you have an Event Hub up and running in your Azure subscription. If you don't have an Event Hub yet, check the article <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create">Create an event hub</a> to learn how to create an Event Hub.*
+### eventhub-recv
+Receive messages sent from devices.
 
-Drop the **node-red-contrib-azure-event-hub-receive** node on a Flow. Double click on the node to open the settings and configure:
+### iothub-send
+Send cloud2device messages to your IoT Hub devices.
 
-- **Event Hub Connection String**: the connection string of the event hug, it can be retrieved from the Azure Portal. It should look like *Endpoint=sb://XXX.servicebus.windows.net/;SharedAccessKeyName=XXX;SharedAccessKey=XXX;EntityPath=XXX*
-- **Event Hub Consumer Group**: the name of the Consumer Group you would like to use. If you didn't create any custom Consumer Groups in your Event Hub, you can use the default name which is *$default*
+### iothub-devices
+Manage IoT Hub Devices.
 
-![](images/propertiespane.png)
+<h4>List devices:</h4>
+<code>method: <b>"device"</b></code>
+<h4>Get device:</h4>
+<code>method: <b>"device"</b>, deviceId: str</code>
+<h4>Create device:</h4>
+<code>method: <b>"device.create"</b>, deviceId: str</code>
 
-Connect the ouput of the node to another node, for example the built-in **debug** node. 
+<div>
+<b>payload (optional):</b>
+<div>
+    <code>
+        {
+            status: 'enabled',
+            authentication: {
+                x509Thumbprint: { primaryThumbprint: XXX, secondaryThumbprint: XXX }
+            }
+        }
+    </code>
+</div>
+</div>
+<h4>Get twin:</h4>
+<code>method: <b>"twin"</b>, deviceId: str</code>
+<h4>Update twin:</h4>
+<code>method: <b>"twin.update"</b>, deviceId: str</code>
 
-![](images/connectedtodebug.png)
-
-**Deploy** the flow, if the connection to the Event Hub is succesful, you'll see a green icon beneath the it's shape with the **connected** label.
-
-![](images/connectedstatus.png)
-
-When messages are sent to your Event Hub, you'll see the message bodies in the **debug** section of Node-RED (top right).
-
-![](images/debugoutput.png)
+<div>
+<b>payload:</b>
+<div>
+    <code>
+        {
+            tags: { city: "Redmond" },
+            properties: {
+                desired: { telemetryInterval: 1000 },
+            }
+        }
+    </code>
+</div>
+</div>
+<h4>Delete device:</h4>
+<code>method: <b>"device.delete"</b>, deviceId: str</code>

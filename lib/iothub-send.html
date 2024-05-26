@@ -1,0 +1,70 @@
+<script type="text/javascript">
+    RED.nodes.registerType('iothub-send', {
+        category: 'input',
+        color: '#0080FF',
+        defaults: {
+            name: { value: "" },
+            connectionstring: { value: "IOTHUB_CONNECTION_STRING" },
+            connectionstringType: { value: "env" },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "icon.png",
+        label: function () {
+            return this.name || "send to device";
+        },
+        oneditprepare: function () {
+            $('#node-input-connectionstring').typedInput({
+                typeField: "#node-input-connectionstringType",
+				default: this.connectionstringType,
+				types: ['str', 'global', 'env'],
+			});
+        },
+    });
+</script>
+
+<script type="text/x-red" data-template-name="iothub-send">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connectionstring"><i class="icon-tag"></i> IoT Hub Connection String</label>
+        <input type="hidden" id="node-input-connectionstringType">
+        <input type="text" id="node-input-connectionstring" placeholder="E.g. Endpoint=sb://XXX.servicebus.windows.net/;SharedAccessKeyName=XXX;SharedAccessKey=XXX;EntityPath=XXX">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="iothub-send">
+    <p>A simple node that receives messages from an Azure Event Hub...</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <code>deviceId: str</code>
+        <b>payload:</b>
+        <code>
+            {
+                "some message": "hi device!"
+            }
+        </code>
+    </dl>
+
+    <h3>Outputs</h3>
+    <ol class="node-ports">
+        <li>Standard output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">object</span></dt>
+                <dd>A JSON object, response from IoT Hub. Not a response from the device.</dd>
+            </dl>
+        </li>
+    </ol>
+    
+    <h3>Details</h3>
+    In the node's properties, the connection string of the IoT Hub to which
+    you would like to connect, can be specified. Value can be retreived from 
+    the Azure Portal.
+
+    <h3>References</h3>
+    <ul>
+        <li><a href="https://github.com/Azure/azure-iot-hub-node/blob/main/samples/send_c2d_message.js">Cloud 2 Device NodeJS Sample</a></li>
+    </ul>
+</script>
