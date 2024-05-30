@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('iothub-devices', {
+    RED.nodes.registerType('iothub-registry', {
         category: 'input',
         color: '#0080FF',
         defaults: {
@@ -9,9 +9,9 @@
         },
         inputs: 1,
         outputs: 1,
-        icon: "icon.png",
+        icon: "iothub.png",
         label: function () {
-            return this.name || "iothub-devices";
+            return this.name || "iothub-registry";
         },
         oneditprepare: function () {
             $('#node-input-connectionstring').typedInput({
@@ -23,7 +23,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="iothub-devices">
+<script type="text/x-red" data-template-name="iothub-registry">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -35,7 +35,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="iothub-devices">
+<script type="text/x-red" data-help-name="iothub-registry">
     <p>A simple node that controls Azure IoT Hub device registry.</p>
     <h3>Inputs</h3>
     <dl class="message-properties" style='overflow-x: auto;'>
@@ -81,7 +81,59 @@
         <h4>Delete device:</h4>
         <code>method: <b>"device.delete"</b>, deviceId: str</code>
 
-    </dl>
+        <h4>List <a href="https://learn.microsoft.com/en-us/javascript/api/azure-iothub/configuration?view=azure-node-latest">configurations</a>:</h4>
+        <code>method: <b>"config"</b></code>
+        <h4>Create configuration:</h4>
+        <code>method: <b>"config.create"</b></code>
+
+        <div>
+        <b>payload:</b>
+        <div>
+            <code>
+                {
+                    id: 'chiller4000x',
+                    content: {
+                        deviceContent: {
+                            'properties.desired.chiller-water': {
+                                temperature: 66,
+                                pressure: 28
+                            }
+                        }
+                    },
+                    metrics: {
+                        queries: {
+                            waterSettingsPending: "SELECT deviceId FROM devices WHERE properties.reported.chillerWaterSettings.status='pending'"
+                        }
+                    },
+                    targetCondition: "properties.reported.chillerProperties.model='4000x'",
+                    priority: 20
+                }
+            </code>
+        </div>
+        <h4>Get configuration:</h4>
+        <code>method: <b>"config"</b>, configId: str</code>
+        <h4>Update configuration:</h4>
+        <code>method: <b>"config.update"</b>, configId: str</code>
+
+        <div>
+        <b>payload:</b>
+        <div>
+            <code>
+                {
+                    content: {
+                        deviceContent: {
+                            'properties.desired.chiller-water': {
+                                pressure: 29
+                            }
+                        }
+                    }
+                }
+            </code>
+        </div>
+        </div>
+
+        <h4>Delete configuration:</h4>
+        <code>method: <b>"config.delete"</b>, configId: str</code>
 
     <h3>Outputs</h3>
     <ol class="node-ports">

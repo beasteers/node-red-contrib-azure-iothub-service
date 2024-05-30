@@ -6,7 +6,7 @@
   "node-red": {
     "nodes": {
       "eventhub-recv": "lib/eventhub-recv.js",
-      "iothub-devices": "lib/iothub-devices.js",
+      "iothub-registry": "lib/iothub-registry.js",
       "iothub-send": "lib/iothub-send.js"
     }
   },

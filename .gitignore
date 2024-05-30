@@ -3,3 +3,7 @@ data/*
 !data/flows.json
 
 .env
+
+.DS_Store
+
+/*.png
