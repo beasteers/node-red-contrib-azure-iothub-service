@@ -26,7 +26,7 @@ df = df.sort_values(['dev_id', 'timestamp'])
 df['time_delta'] = df.groupby('dev_id', group_keys=False)['timestamp'].diff().dt.total_seconds()
 
 # Plot histogram
-df.set_index('dev_id').plot.scatter('timestamp', 'time_delta')
+df.set_index('dev_id').plot.scatter('timestamp', 'time_delta', s=1)
 plt.title('Histogram of Time Deltas')
 plt.savefig('timedeltas.png')
 
