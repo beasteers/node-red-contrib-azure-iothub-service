@@ -7,6 +7,9 @@
             connectionstring: { value: "IOTHUB_CONNECTION_STRING" },
             connectionstringType: { value: "env" },
         },
+        credentials: {
+            connectionstring: { type: "text" },
+        },
         inputs: 1,
         outputs: 1,
         icon: "iothub.png",
@@ -17,7 +20,7 @@
             $('#node-input-connectionstring').typedInput({
                 typeField: "#node-input-connectionstringType",
 				default: this.connectionstringType,
-				types: ['str', 'global', 'env'],
+				types: ['str', 'env', 'cred', 'flow', 'global'],
 			});
         },
     });
@@ -31,7 +34,7 @@
     <div class="form-row">
         <label for="node-input-connectionstring"><i class="icon-tag"></i> IoT Hub Connection String</label>
         <input type="hidden" id="node-input-connectionstringType">
-        <input type="text" id="node-input-connectionstring" placeholder="E.g. Endpoint=sb://XXX.servicebus.windows.net/;SharedAccessKeyName=XXX;SharedAccessKey=XXX;EntityPath=XXX">
+        <input type="text" id="node-input-connectionstring" placeholder="E.g. XXX.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=XXX">
     </div>
 </script>
 

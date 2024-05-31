@@ -120,24 +120,25 @@ Manage IoT Hub Devices.
 ## other functionality
  - checkpoint store
     - validate NodeRedCheckpointStore
+    - local file checkpoint store (could use contextstore = localfilesystem)
     - Azure Blob backed store
  - generate certs
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/create_device_with_cert.js
 
-### lower-priority functionality
+### lower-priority
  - device methods: 
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/dmpatterns_reboot_service.js
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/dmpatterns_fwupdate_service.js
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/invoke_command.js
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/invoke_component_command.js
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/module_method.js
+ - file notification
+    - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/receive_file_notifications.js
  - jobs
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/job_query.js
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/schedule_job.js
- - file notification
-    - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/receive_file_notifications.js
 
-### stuff I don't care about
+### even lower priority
  - bulk blob import export
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/registry_bulk_import_sample.js
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/registry_bulk_export_sample.js
@@ -149,7 +150,7 @@ Manage IoT Hub Devices.
  - token credentials
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/send_c2d_message_with_token_credential.js
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/create_device_with_token_credential.js
- - digital twin client
+ - digital twin client (already accomplished with registry afaict)
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/update_digital_twin.js
  - edge deployment
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/edge_deployment_sample.js

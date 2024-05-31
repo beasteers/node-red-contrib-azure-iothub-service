@@ -1,7 +1,7 @@
 {
   "name": "node-red-contrib-azure-iothub-service",
   "description": "Nodes to communicate with devices via Azure IoT Hub and Event Hubs.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": { "name": "Bea Steers" },
   "node-red": {
     "nodes": {

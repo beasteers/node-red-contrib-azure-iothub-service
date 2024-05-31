@@ -3,6 +3,7 @@
         category: 'input',
         color: '#0080FF',
         defaults: {
+            name: { value: "" },
             connectionstring: { value: "" },
             consumergroup: { value: "$default" },
             connectionstringType: { value: "cred" },
@@ -10,7 +11,6 @@
         },
         credentials: {
             connectionstring: { type: "text" },
-            consumergroup: { type: "text" },
         },
         inputs: 0,
         outputs: 4,
@@ -28,13 +28,17 @@
             $('#node-input-consumergroup').typedInput({
                 typeField: "#node-input-consumergroupType",
 				default: this.consumergroupType,
-				types: ['str', 'env', 'cred', 'flow', 'global'],
+				types: ['str', 'env', 'flow', 'global'],
 			});
         },
     });
 </script>
 
 <script type="text/x-red" data-template-name="eventhub-recv">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
     <div class="form-row">
         <label for="node-input-connectionstring"><i class="icon-tag"></i> Event Hub Connection String</label>
         <input type="hidden" id="node-input-connectionstringType">
