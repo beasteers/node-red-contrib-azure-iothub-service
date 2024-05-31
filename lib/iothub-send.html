@@ -8,8 +8,9 @@
             connectionstringType: { value: "env" },
         },
         inputs: 1,
-        outputs: 1,
+        outputs: 2,
         icon: "iothub.png",
+        outputLabels: ["response", "error"],
         label: function () {
             return this.name || "send to device";
         },
