@@ -3,11 +3,14 @@
         category: 'input',
         color: '#0080FF',
         defaults: {
-            name: { value: "" },
-            connectionstring: { value: "EVENTHUB_CONNECTION_STRING" },
+            connectionstring: { value: "" },
             consumergroup: { value: "$default" },
-            connectionstringType: { value: "env" },
+            connectionstringType: { value: "cred" },
             consumergroupType: { value: "str" },
+        },
+        credentials: {
+            connectionstring: { type: "text" },
+            consumergroup: { type: "text" },
         },
         inputs: 0,
         outputs: 4,
@@ -20,22 +23,18 @@
             $('#node-input-connectionstring').typedInput({
 				typeField: "#node-input-connectionstringType",
                 default: this.connectionstringType,
-				types: ['str', 'global', 'env'],
+				types: ['str', 'env', 'cred', 'flow', 'global'],
 			});
             $('#node-input-consumergroup').typedInput({
                 typeField: "#node-input-consumergroupType",
 				default: this.consumergroupType,
-				types: ['str', 'global', 'env'],
+				types: ['str', 'env', 'cred', 'flow', 'global'],
 			});
         },
     });
 </script>
 
 <script type="text/x-red" data-template-name="eventhub-recv">
-    <div class="form-row">
-        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
     <div class="form-row">
         <label for="node-input-connectionstring"><i class="icon-tag"></i> Event Hub Connection String</label>
         <input type="hidden" id="node-input-connectionstringType">
@@ -74,6 +73,6 @@
     <h3>References</h3>
     <ul>
         <li><a href="https://azure.microsoft.com/en-us/services/event-hubs/">Azure Event Hubs</a></li>
-        <li><a https://github.com/azure/azure-event-hubs-node>Azure Event Hubs NodeJS client (in preview)</a> - the client library used by this node</li>
+        <li><a href="https://github.com/azure/azure-event-hubs-node">Azure Event Hubs NodeJS client (in preview)</a> - the client library used by this node</li>
     </ul>
 </script>

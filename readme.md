@@ -16,8 +16,9 @@ Receive messages sent from devices via the builtin Event Hub.
 ### iothub-send
 Send cloud2device messages to your IoT Hub devices.
 
-### iothub-devices
+### iothub-registry
 Manage IoT Hub Devices.
+
 
 <h4>List devices:</h4>
 <code>method: <b>"device"</b></code>
@@ -60,10 +61,65 @@ Manage IoT Hub Devices.
 <h4>Delete device:</h4>
 <code>method: <b>"device.delete"</b>, deviceId: str</code>
 
+<h4>List <a href="https://learn.microsoft.com/en-us/javascript/api/azure-iothub/configuration?view=azure-node-latest">configurations</a>:</h4>
+<code>method: <b>"config"</b></code>
+<h4>Create configuration:</h4>
+<code>method: <b>"config.create"</b></code>
+
+<div>
+<b>payload:</b>
+<div>
+    <code>
+        {
+            id: 'chiller4000x',
+            content: {
+                deviceContent: {
+                    'properties.desired.chiller-water': {
+                        temperature: 66,
+                        pressure: 28
+                    }
+                }
+            },
+            metrics: {
+                queries: {
+                    waterSettingsPending: "SELECT deviceId FROM devices WHERE properties.reported.chillerWaterSettings.status='pending'"
+                }
+            },
+            targetCondition: "properties.reported.chillerProperties.model='4000x'",
+            priority: 20
+        }
+    </code>
+</div>
+<h4>Get configuration:</h4>
+<code>method: <b>"config"</b>, configId: str</code>
+<h4>Update configuration:</h4>
+<code>method: <b>"config.update"</b>, configId: str</code>
+
+<div>
+<b>payload:</b>
+<div>
+    <code>
+        {
+            content: {
+                deviceContent: {
+                    'properties.desired.chiller-water': {
+                        pressure: 29
+                    }
+                }
+            }
+        }
+    </code>
+</div>
+</div>
+
+<h4>Delete configuration:</h4>
+<code>method: <b>"config.delete"</b>, configId: str</code>
+
+
 
 ## other functionality
  - checkpoint store
-    - I implemented a basic nodered context backed impl, but I'm not certain it's working
+    - validate NodeRedCheckpointStore
     - Azure Blob backed store
  - generate certs
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/create_device_with_cert.js
