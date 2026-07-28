@@ -41,14 +41,45 @@ test("eventhub-recv node fails gracefully with missing connection string", () =>
 
   const node = harness.instantiate("eventhub-recv", {
     id: "recv1",
-    connectionstring: "",
-    connectionstringType: "str",
-    consumergroup: "$default",
-    consumergroupType: "str",
+    name: "test-recv",
+    eventhub: "",
   });
 
   assert.equal(node.errors.some((e) => /Connection string is required/.test(e)), true);
   assert.equal(node.statuses.some((s) => /Connection string is required/.test(s.text)), true);
+});
+
+test("eventhub-recv node resolves values from config node", () => {
+  const harness = createHarness();
+  harness.registerNodes();
+
+  const configNode = harness.instantiate("eventhub-config", {
+    id: "eh-cfg-1",
+    connectionstring: "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=dGVzdA==;EntityPath=testhub",
+    connectionstringType: "str",
+    consumergroup: "mygroup",
+    consumergroupType: "str",
+  });
+
+  assert.equal(configNode.connectionstring, "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=dGVzdA==;EntityPath=testhub");
+  assert.equal(configNode.consumergroup, "mygroup");
+});
+
+test("eventhub-recv legacy inline connectionstring still works", () => {
+  const harness = createHarness();
+  harness.registerNodes();
+
+  const node = harness.instantiate("eventhub-recv", {
+    id: "recv-legacy",
+    name: "legacy-recv",
+    eventhub: "",
+    connectionstring: "Endpoint=sb://legacy.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=dGVzdA==;EntityPath=legacyhub",
+    connectionstringType: "str",
+    consumergroup: "legacygroup",
+    consumergroupType: "str",
+  });
+
+  assert.equal(node.warnings.some((w) => /deprecated/.test(w)), true);
 });
 
 test("iothub-registry node rejects unknown method", () => {
@@ -142,12 +173,12 @@ test("iothub-registry connectionstring uses credential fallback", () => {
   assert.equal(node.connectionstring, "HostName=test-from-cred.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=dGVzdGtleQ==");
 });
 
-test("all three nodes register their types", () => {
+test("all node types are registered", () => {
   const harness = createHarness();
   harness.registerNodes();
 
-  const registered = ["eventhub-recv", "iothub-send", "iothub-registry"].filter((name) =>
+  const registered = ["eventhub-config", "eventhub-recv", "iothub-send", "iothub-registry"].filter((name) =>
     harness.types.has(name)
   );
-  assert.deepEqual(registered.sort(), ["eventhub-recv", "iothub-registry", "iothub-send"]);
+  assert.deepEqual(registered.sort(), ["eventhub-config", "eventhub-recv", "iothub-registry", "iothub-send"]);
 });

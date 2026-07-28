@@ -9,7 +9,7 @@ const ROOT = path.resolve(__dirname, "../..");
 function createHarness() {
   const types = new Map();
   let idCounter = 0;
-
+  const instances = new Map();
   const contextStore = new Map();
 
   const RED = {
@@ -39,6 +39,10 @@ function createHarness() {
             },
           };
         };
+        instances.set(node.id, node);
+      },
+      getNode(id) {
+        return instances.get(id);
       },
     },
     util: {},
@@ -57,6 +61,7 @@ function createHarness() {
   }
 
   function registerNodes() {
+    require(path.join(ROOT, "lib/eventhub-config"))(RED);
     require(path.join(ROOT, "lib/eventhub-recv"))(RED);
     require(path.join(ROOT, "lib/iothub-send"))(RED);
     require(path.join(ROOT, "lib/iothub-registry"))(RED);

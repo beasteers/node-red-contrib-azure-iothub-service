@@ -1,10 +1,8 @@
 <script type="text/javascript">
-    RED.nodes.registerType('eventhub-recv', {
-        category: 'input',
-        color: '#0080FF',
+    RED.nodes.registerType('eventhub-config', {
+        category: 'config',
         defaults: {
             name: { value: "" },
-            eventhub: { value: "", type: "eventhub-config" },
             connectionstring: { value: "" },
             consumergroup: { value: "$default" },
             connectionstringType: { value: "cred" },
@@ -13,12 +11,8 @@
         credentials: {
             connectionstring: { type: "text" },
         },
-        inputs: 0,
-        outputs: 4,
-        outputLabels: ["message", "error", "connect", "close"],
-        icon: "eventhub.png",
         label: function () {
-            return this.name || "event-hub";
+            return this.name || "eventhub-config";
         },
         oneditprepare: function () {
             $('#node-input-connectionstring').typedInput({
@@ -35,17 +29,10 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="eventhub-recv">
+<script type="text/x-red" data-template-name="eventhub-config">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
-    </div>
-    <div class="form-row">
-        <label for="node-input-eventhub"><i class="icon-tag"></i> Event Hub Config</label>
-        <input type="text" id="node-input-eventhub">
-    </div>
-    <div class="form-row">
-        <label><i class="icon-tag"></i> <em>Legacy (inline connection)</em></label>
     </div>
     <div class="form-row">
         <label for="node-input-connectionstring"><i class="icon-tag"></i> Event Hub Connection String</label>
@@ -59,32 +46,8 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="eventhub-recv">
-    <p>A simple node that receives messages from an Azure Event Hub...</p>
-    <h3>Inputs</h3>
-    <dl class="message-properties">
-        There are no inputs.
-    </dl>
-
-    <h3>Outputs</h3>
-    <ol class="node-ports">
-        <li>Standard output
-            <dl class="message-properties">
-                <dt>payload <span class="property-type">object</span></dt>
-                <dd>A JSON object, received from the Event Hub.</dd>
-            </dl>
-        </li>
-    </ol>
-    
+<script type="text/x-red" data-help-name="eventhub-config">
+    <p>Configuration node for an Azure Event Hub connection.</p>
     <h3>Details</h3>
-    The Event Hub Config property specifies an <code>eventhub-config</code> node
-    that contains the connection string and consumer group. When set, it takes
-    precedence over the legacy inline connection string and consumer group
-    fields below.
-
-    <h3>References</h3>
-    <ul>
-        <li><a href="https://azure.microsoft.com/en-us/services/event-hubs/">Azure Event Hubs</a></li>
-        <li><a href="https://github.com/azure/azure-event-hubs-node">Azure Event Hubs NodeJS client (in preview)</a> - the client library used by this node</li>
-    </ul>
+    <p>Stores the Event Hub connection string and consumer group. Event Hub receive nodes refer to this configuration to share credentials across multiple nodes.</p>
 </script>
