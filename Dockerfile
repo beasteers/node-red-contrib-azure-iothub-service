@@ -1,4 +1,4 @@
-FROM nodered/node-red:latest-18
+FROM nodered/node-red:4.1.3-18
 
 # USER root
 # RUN apk add python3 py3-pip

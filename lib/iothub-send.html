@@ -1,6 +1,6 @@
 <script type="text/javascript">
     RED.nodes.registerType('iothub-send', {
-        category: 'input',
+        category: 'output',
         color: '#0080FF',
         defaults: {
             name: { value: "" },
@@ -40,7 +40,7 @@
 </script>
 
 <script type="text/x-red" data-help-name="iothub-send">
-    <p>A simple node that receives messages from an Azure Event Hub...</p>
+    <p>A node that sends cloud-to-device messages to Azure IoT Hub devices.</p>
     <h3>Inputs</h3>
     <dl class="message-properties">
         <code>deviceId: str</code>

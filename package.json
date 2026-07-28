@@ -14,8 +14,9 @@
   },
   "dependencies": {
     "@azure/event-hubs": "5.12.0",
+    "azure-iot-common": "1.13.2",
     "azure-iothub": "1.16.5",
-    "azure-iot-common": "1.13.2"
+    "uuid": "^8.3.2"
   },
   "keywords": [
     "node-red",
@@ -28,6 +29,12 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/beasteers/node-red-contrib-azure-iothub-service.git"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "license": "MIT"
 }
