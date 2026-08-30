@@ -1,0 +1,108 @@
+[
+    {
+        "id": "demo-tab",
+        "type": "tab",
+        "label": "Event Hub Demo",
+        "disabled": false,
+        "info": "Demo flow for the Event Hub emulator.\n\nThe eventhub-config node resolves its connection string from the EVENTHUB_CONNECTION_STRING environment variable (set in docker-compose.yaml), so no credentials are stored in this file.\n\nMessages are received from the emulator's 'eh1' event hub. To send test messages, run: node demo/send-test-message.js"
+    },
+    {
+        "id": "demo-config",
+        "type": "eventhub-config",
+        "name": "emulator",
+        "consumergroup": "$default",
+        "connectionstringType": "env",
+        "consumergroupType": "str"
+    },
+    {
+        "id": "demo-recv",
+        "type": "eventhub-recv",
+        "z": "demo-tab",
+        "name": "emulator",
+        "eventhub": "demo-config",
+        "x": 220,
+        "y": 220,
+        "wires": [
+            [
+                "demo-debug-msg"
+            ],
+            [
+                "demo-debug-err"
+            ],
+            [
+                "demo-debug-conn"
+            ],
+            [
+                "demo-debug-close"
+            ]
+        ]
+    },
+    {
+        "id": "demo-debug-msg",
+        "type": "debug",
+        "z": "demo-tab",
+        "name": "message",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 470,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "demo-debug-err",
+        "type": "debug",
+        "z": "demo-tab",
+        "name": "error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 460,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "demo-debug-conn",
+        "type": "debug",
+        "z": "demo-tab",
+        "name": "connect",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 460,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "demo-debug-close",
+        "type": "debug",
+        "z": "demo-tab",
+        "name": "close",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 460,
+        "y": 300,
+        "wires": []
+    }
+]

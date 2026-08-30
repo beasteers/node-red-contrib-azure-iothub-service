@@ -176,6 +176,22 @@ npm install
 npm test
 ```
 
+### Demo with docker compose
+
+`demo/` contains a ready-to-run flow for the [Azure Event Hub emulator](https://learn.microsoft.com/en-us/azure/event-hubs/test-locally-with-event-hub-emulator) — no Azure account or real credentials needed.
+
+```bash
+cd demo
+docker compose up -d
+# open http://localhost:1880
+# send test messages to watch them arrive in the debug sidebar:
+node demo/send-test-message.js
+```
+
+The demo flow's `eventhub-config` node resolves its connection string from the `EVENTHUB_CONNECTION_STRING` environment variable (set in `docker-compose.yaml`), so `flows.json` contains no credentials. To point the demo at a real Event Hub, change that env var.
+
+Note: the emulator publishes ports 5672/9092/5300 (and azurite 10000-10002), which are shared with the integration-test emulator — run one at a time.
+
 ### Integration tests (Event Hub emulator)
 
 `test/eventhub-emulator.test.js` runs `eventhub-recv` end-to-end against the
@@ -187,3 +203,7 @@ cd test/emulator
 docker compose up -d
 npm test
 ```
+
+### Keeping connection strings out of flows.json
+
+Connection strings are stored as node **credentials** (`flows_cred.json`, encrypted), never in the flow file. In the editor, pick the `cred` type for the connection string field (the default). If a node warns that its connection string is "stored in plaintext in the flow file", re-enter it through the credential field to migrate it. If you ever see a connection string in a `flows.json` you are about to commit, stop — it should only live in `flows_cred.json` or an environment variable.
