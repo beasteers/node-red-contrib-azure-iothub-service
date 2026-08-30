@@ -65,6 +65,38 @@ test("eventhub-recv node resolves values from config node", () => {
   assert.equal(configNode.consumergroup, "mygroup");
 });
 
+test("eventhub-config falls back to EVENTHUB_CONNECTION_STRING env var", () => {
+  const harness = createHarness();
+  harness.registerNodes();
+
+  process.env.EVENTHUB_CONNECTION_STRING = "Endpoint=sb://env.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=ZW52;EntityPath=envhub";
+  try {
+    const node = harness.instantiate("eventhub-config", {
+      id: "eh-cfg-env",
+      connectionstringType: "env",
+    });
+    assert.equal(node.connectionstring, "Endpoint=sb://env.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=ZW52;EntityPath=envhub");
+  } finally {
+    delete process.env.EVENTHUB_CONNECTION_STRING;
+  }
+});
+
+test("iothub-registry falls back to IOTHUB_CONNECTION_STRING env var", () => {
+  const harness = createHarness();
+  harness.registerNodes();
+
+  process.env.IOTHUB_CONNECTION_STRING = "HostName=env.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ZW52";
+  try {
+    const node = harness.instantiate("iothub-registry", {
+      id: "reg-env",
+      connectionstringType: "env",
+    });
+    assert.equal(node.connectionstring, "HostName=env.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ZW52");
+  } finally {
+    delete process.env.IOTHUB_CONNECTION_STRING;
+  }
+});
+
 test("getSecretField warns when connection string is stored in plaintext", () => {
   const harness = createHarness();
   harness.registerNodes();
