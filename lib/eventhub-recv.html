@@ -20,6 +20,11 @@
             return this.name || "event-hub";
         },
         oneditprepare: function () {
+            // Open the legacy section when it's actually in use (no config
+            // node selected and an inline connection string is set).
+            if (!this.eventhub && $('#node-input-connectionstring').val()) {
+                $('#node-input-legacy').attr('open', 'open');
+            }
             $('#node-input-connectionstring').typedInput({
                 typeField: "#node-input-connectionstringType",
                 default: this.connectionstringType,
@@ -43,19 +48,20 @@
         <label for="node-input-eventhub"><i class="icon-tag"></i> Event Hub Config</label>
         <input type="text" id="node-input-eventhub">
     </div>
-    <div class="form-row">
-        <label><i class="icon-tag"></i> <em>Legacy (inline connection)</em></label>
-    </div>
-    <div class="form-row">
-        <label for="node-input-connectionstring"><i class="icon-tag"></i> Event Hub Connection String</label>
-        <input type="hidden" id="node-input-connectionstringType">
-        <input type="text" id="node-input-connectionstring" placeholder="E.g. Endpoint=sb://XXX.servicebus.windows.net/;SharedAccessKeyName=XXX;SharedAccessKey=XXX;EntityPath=XXX">
-    </div>
-    <div class="form-row">
-        <label for="node-input-consumergroup"><i class="icon-tag"></i> Consumer Group</label>
-        <input type="hidden" id="node-input-consumergroupType">
-        <input type="text" id="node-input-consumergroup" placeholder="$default">
-    </div>
+    <details id="node-input-legacy">
+        <summary><i class="icon-tag"></i> <em>Legacy (inline connection)</em></summary>
+        <p class="form-tips" style="margin: 0 0 4px 0;">Prefer an <code>eventhub-config</code> node above; these fields are only used when none is selected.</p>
+        <div class="form-row">
+            <label for="node-input-connectionstring"><i class="icon-tag"></i> Event Hub Connection String</label>
+            <input type="hidden" id="node-input-connectionstringType">
+            <input type="text" id="node-input-connectionstring" placeholder="E.g. Endpoint=sb://XXX.servicebus.windows.net/;SharedAccessKeyName=XXX;SharedAccessKey=XXX;EntityPath=XXX">
+        </div>
+        <div class="form-row">
+            <label for="node-input-consumergroup"><i class="icon-tag"></i> Consumer Group</label>
+            <input type="hidden" id="node-input-consumergroupType">
+            <input type="text" id="node-input-consumergroup" placeholder="$default">
+        </div>
+    </details>
 </script>
 
 <script type="text/x-red" data-help-name="eventhub-recv">
