@@ -65,6 +65,35 @@ test("eventhub-recv node resolves values from config node", () => {
   assert.equal(configNode.consumergroup, "mygroup");
 });
 
+test("getSecretField warns when connection string is stored in plaintext", () => {
+  const harness = createHarness();
+  harness.registerNodes();
+
+  const node = harness.instantiate("eventhub-config", {
+    id: "eh-cfg-plain",
+    connectionstring: "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=dGVzdA==;EntityPath=testhub",
+    connectionstringType: "str",
+  });
+
+  assert.equal(node.connectionstring, "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=dGVzdA==;EntityPath=testhub");
+  assert.equal(node.warnings.some((w) => /plaintext in the flow file/.test(w)), true);
+});
+
+test("getSecretField does not warn when using a credential", () => {
+  const harness = createHarness();
+  harness.registerNodes();
+
+  const node = harness.instantiate("eventhub-config", {
+    id: "eh-cfg-cred",
+    connectionstring: "cred-id",
+    connectionstringType: "cred",
+    credentials: { connectionstring: "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=dGVzdA==;EntityPath=testhub" },
+  });
+
+  assert.equal(node.connectionstring, "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=dGVzdA==;EntityPath=testhub");
+  assert.equal(node.warnings.some((w) => /plaintext in the flow file/.test(w)), false);
+});
+
 test("iothub-registry node rejects unknown method", () => {
   const harness = createHarness();
   harness.registerNodes();
