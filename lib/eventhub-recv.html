@@ -60,18 +60,43 @@
 </script>
 
 <script type="text/x-red" data-help-name="eventhub-recv">
-    <p>A simple node that receives messages from an Azure Event Hub...</p>
+    <p>A node that receives messages from an Azure Event Hub...</p>
     <h3>Inputs</h3>
     <dl class="message-properties">
-        There are no inputs.
+        There are no inputs. Messages are received on deploy.
     </dl>
 
     <h3>Outputs</h3>
     <ol class="node-ports">
-        <li>Standard output
+        <li>Message
             <dl class="message-properties">
                 <dt>payload <span class="property-type">object</span></dt>
-                <dd>A JSON object, received from the Event Hub.</dd>
+                <dd>The received message body.</dd>
+                <dt>context <span class="property-type">object</span></dt>
+                <dd>Partition context: <code>partitionId</code>, <code>eventHubName</code>, <code>consumerGroup</code>, <code>fullyQualifiedNamespace</code>.</dd>
+                <dt>processTimeUtc <span class="property-type">date</span></dt>
+                <dd>When the message was processed.</dd>
+            </dl>
+            Message metadata (offset, sequenceNumber, enqueuedTimeUtc, properties, systemProperties, ...) is included alongside the payload.
+        </li>
+        <li>Error
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">object</span></dt>
+                <dd><code>{ name, message, code }</code> describing a partition processing error.</dd>
+            </dl>
+        </li>
+        <li>Connect
+            <dl class="message-properties">
+                <dt>payload.status <span class="property-type">string</span></dt>
+                <dd><code>"connected"</code> when a partition is claimed.</dd>
+            </dl>
+        </li>
+        <li>Close
+            <dl class="message-properties">
+                <dt>payload.status <span class="property-type">string</span></dt>
+                <dd><code>"closed"</code> when a partition is released.</dd>
+                <dt>payload.reason <span class="property-type">string</span></dt>
+                <dd>Why the partition was closed.</dd>
             </dl>
         </li>
     </ol>
@@ -85,6 +110,6 @@
     <h3>References</h3>
     <ul>
         <li><a href="https://azure.microsoft.com/en-us/services/event-hubs/">Azure Event Hubs</a></li>
-        <li><a href="https://github.com/azure/azure-event-hubs-node">Azure Event Hubs NodeJS client (in preview)</a> - the client library used by this node</li>
+        <li><a href="https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/eventhub/event-hubs">Azure Event Hubs client library for JS</a> - the client library used by this node</li>
     </ul>
 </script>

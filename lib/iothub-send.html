@@ -54,10 +54,16 @@
 
     <h3>Outputs</h3>
     <ol class="node-ports">
-        <li>Standard output
+        <li>Response
             <dl class="message-properties">
                 <dt>payload <span class="property-type">object</span></dt>
                 <dd>A JSON object, response from IoT Hub. Not a response from the device.</dd>
+            </dl>
+        </li>
+        <li>Error
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Error message if the send failed.</dd>
             </dl>
         </li>
     </ol>

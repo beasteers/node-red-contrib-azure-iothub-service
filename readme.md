@@ -10,8 +10,21 @@ npm install -g node-red-contrib-azure-iothub-service
 
 # Usage
 
+### eventhub-config
+Configuration node that holds an Event Hub connection string and consumer group so multiple `eventhub-recv` nodes can share them. When set on a receive node, it takes precedence over the legacy inline fields.
+
 ### eventhub-recv
 Receive messages sent from devices via the builtin Event Hub.
+
+Inputs: none (subscribes on deploy).
+
+Outputs (4):
+1. **message** — `payload` is the received message body. Also includes Event Hub metadata (`offset`, `sequenceNumber`, `enqueuedTimeUtc`, `properties`, `systemProperties`, ...), the partition context (`partitionId`, `eventHubName`, `consumerGroup`, `fullyQualifiedNamespace`) and a `processTimeUtc` timestamp.
+2. **error** — `payload` contains `{ name, message, code }` (plus any error body) for partition processing errors.
+3. **connect** — `payload.status` is `"connected"` when a partition is claimed.
+4. **close** — `payload.status` is `"closed"` with the `reason` when a partition is released.
+
+Message processing is checkpointed to Node-RED global context, so on restart the consumer resumes from the last checkpoint instead of the latest position.
 
 ### iothub-send
 Send cloud2device messages to your IoT Hub devices.
@@ -62,7 +75,7 @@ Manage IoT Hub Devices.
 <code>method: <b>"device.delete"</b>, deviceId: str</code>
 
 <h4>List <a href="https://learn.microsoft.com/en-us/javascript/api/azure-iothub/configuration?view=azure-node-latest">configurations</a>:</h4>
-<code>method: <b>"config"</b></code>
+<code>method: <b>"configs"</b></code>
 <h4>Create configuration:</h4>
 <code>method: <b>"config.create"</b></code>
 
@@ -119,9 +132,8 @@ Manage IoT Hub Devices.
 
 ## other functionality
  - checkpoint store
-    - validate NodeRedCheckpointStore
-    - local file checkpoint store (could use contextstore = localfilesystem)
-    - Azure Blob backed store
+    - implemented: `NodeRedCheckpointStore` — ownership + checkpoints stored in Node-RED global context
+    - Azure Blob backed store (e.g. `@azure/eventhubs-checkpointstore-blob`) as a possible alternative
  - generate certs
     - https://github.com/Azure/azure-iot-hub-node/blob/main/samples/create_device_with_cert.js
 
@@ -158,5 +170,8 @@ Manage IoT Hub Devices.
 # Contribution
 
 ```bash
-
+git clone git@github.com:beasteers/node-red-contrib-azure-iothub-service.git
+cd node-red-contrib-azure-iothub-service
+npm install
+npm test
 ```
