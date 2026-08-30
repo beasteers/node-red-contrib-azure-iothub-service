@@ -98,6 +98,22 @@ test("iothub-registry query accumulates across three pages", async () => {
   );
 });
 
+test("eventhub-recv legacy inline connectionstring still works", () => {
+  const harness = setupMockedHarness();
+
+  const node = harness.instantiate("eventhub-recv", {
+    id: "recv-legacy",
+    name: "legacy-recv",
+    eventhub: "",
+    connectionstring: "Endpoint=sb://legacy.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=dGVzdA==;EntityPath=legacyhub",
+    connectionstringType: "str",
+    consumergroup: "legacygroup",
+    consumergroupType: "str",
+  });
+
+  assert.equal(node.warnings.some((w) => /deprecated/.test(w)), true);
+});
+
 test("iothub-send node closes client on node close", async () => {
   const harness = setupMockedHarness();
 

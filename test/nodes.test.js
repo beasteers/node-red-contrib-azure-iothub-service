@@ -65,23 +65,6 @@ test("eventhub-recv node resolves values from config node", () => {
   assert.equal(configNode.consumergroup, "mygroup");
 });
 
-test("eventhub-recv legacy inline connectionstring still works", () => {
-  const harness = createHarness();
-  harness.registerNodes();
-
-  const node = harness.instantiate("eventhub-recv", {
-    id: "recv-legacy",
-    name: "legacy-recv",
-    eventhub: "",
-    connectionstring: "Endpoint=sb://legacy.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=dGVzdA==;EntityPath=legacyhub",
-    connectionstringType: "str",
-    consumergroup: "legacygroup",
-    consumergroupType: "str",
-  });
-
-  assert.equal(node.warnings.some((w) => /deprecated/.test(w)), true);
-});
-
 test("iothub-registry node rejects unknown method", () => {
   const harness = createHarness();
   harness.registerNodes();
