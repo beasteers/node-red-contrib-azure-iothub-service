@@ -29,6 +29,7 @@ function createHarness() {
         node.status = (status) => node.statuses.push(status);
         node.error = (error) => node.errors.push(error);
         node.warn = (warning) => node.warnings.push(warning);
+        node.log = () => {};
         node.credentials = config.credentials || {};
         node.context = function () {
           return {

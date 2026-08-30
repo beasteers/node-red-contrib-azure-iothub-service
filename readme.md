@@ -175,3 +175,15 @@ cd node-red-contrib-azure-iothub-service
 npm install
 npm test
 ```
+
+### Integration tests (Event Hub emulator)
+
+`test/eventhub-emulator.test.js` runs `eventhub-recv` end-to-end against the
+[Azure Event Hub emulator](https://learn.microsoft.com/en-us/azure/event-hubs/test-locally-with-event-hub-emulator).
+It is skipped automatically when the emulator is not reachable.
+
+```bash
+cd test/emulator
+docker compose up -d
+npm test
+```
